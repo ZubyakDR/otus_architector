@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: hello-deployment
+spec:
+    replicas: 1
+    selector:
+       matchLabels:
+          app: hello-py-app
+    template:
+       metadata:
+          labels:
+             app: hello-py-app
+       spec:
+          containers:
+          - name: hello-py
+            image: zubyakdr/python:v10
+            env:
+              - name: GREETING
+                valueFrom:
+                  configMapKeyRef:
+                    name: hello-config
+                    key: GREETING
+            ports:
+              - name: web 
+                containerPort: 80
